@@ -4,7 +4,8 @@
  *  Created on: May 22, 2016
  *      Author: raydelto
  */
-
+#include <stdio.h>
+#include <stdlib.h>
 #ifndef TICTACTOE_H_
 #define TICTACTOE_H_
 #include <iostream>

@@ -8,12 +8,16 @@ char player = 'X';
 bool isAvailable(int row, int column)
 {
 	//TODO: Implement this code so that it tells the user whether or not he can play in the selected cell
+	if(board[row][column] != '_'){
+            printf("That box is already occupated, try again\n");
+        }else{
+            board[row][column] = player;
+        }
 	return true;
 }
 
 //Give initial values to the board matrix
-void init()
-{
+void init(){
 	for(int i = 0 ; i < 3 ; i++)
 	{
 		for(int j = 0 ; j < 3 ; j++)
@@ -48,10 +52,85 @@ bool gameover()
 {
 	//TODO: Implement this method,verify if any player has won the match of it's being a tie.
 	//Return true if the game is over. Print message informing the user about what just happened.
-	if(false){ // change this with a real condition
-		cout << "You loose" << endl;
-	}
-	return false;
+
+    //horizontal
+    char playerFound = board[0][0];
+    for(int i=0; i<3; i++){
+        for(int j=0; j<3; j++){
+            if(board[i][j] =='_'){
+                break;
+            }
+            if(playerFound != board[i][j]){
+                break;
+            }
+            playerFound = board[i][j];
+            if(j == 2){
+                printf("The winner is %c", playerFound);
+                return true;
+            }
+        }
+    }
+    //vertical
+    playerFound = board[0][0];
+    for(int i=0; i<3; i++){
+        for(int j=0; j<3; j++){
+            if(board[j][i] =='_'){
+                break;
+            }
+            if(playerFound != board[j][i]){
+                break;
+            }
+            playerFound = board[j][i];
+            if(j == 2){
+                printf("The winner is %c", playerFound);
+                return true;
+            }
+        }
+    }
+    // Diagonal from left to right
+    playerFound = board[0][0];
+    for(int i=0; i<3; i++){
+        if(board[i][i] =='_'){
+            break;
+        }
+        if(playerFound != board[i][i]){
+                break;
+        }
+        playerFound = board[i][i];
+        if(i == 2){
+            printf("The winner is %c", playerFound);
+            return true;
+        }
+    }
+    //diagonal from right to left
+    playerFound = board[0][2];
+    for(int i=2; i>=0; i--){
+        if(board[2-i][i] =='_'){
+            break;
+        }
+        if(playerFound != board[2-i][i]){
+                break;
+        }
+        playerFound = board[2-i][i];
+        if(i == 0){
+            printf("The winner is %c", playerFound);
+            return true;
+        }
+    }
+    bool draw();
+    return false;
+}
+//draw
+bool draw(){
+    for(int i=0; i<3; i++){
+        for(int j=0;j<3;j++){
+            if(board[i][j] == '_'){
+                return false;
+            }
+        }
+    }
+    printf("There is a draw \n");
+    return true;
 }
 
 bool isValidInput(istream& in){
@@ -59,7 +138,7 @@ bool isValidInput(istream& in){
 	{
 		cout <<"Only numbers are accepted" << endl;
 	    in.clear();
-	    in.ignore(numeric_limits<streamsize>::max(), '\n'); //skip bad input
+	   // in.ignore(numeric_limits<streamsize>::max(), '\n'); //skip bad input
 	    return false;
 	}else
 	{
@@ -69,7 +148,7 @@ bool isValidInput(istream& in){
 
 void showBoard()
 {
-	while(!gameover())
+	while(!gameover() && !draw())
 	{
 		clearScreen();
 		int row = 0;
